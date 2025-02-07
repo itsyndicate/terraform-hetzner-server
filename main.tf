@@ -77,8 +77,7 @@ resource "hcloud_server" "this" {
     ignore_changes = [
       ssh_keys,
       user_data,
-      image,
-      network
+      image
     ]
   }
 }
