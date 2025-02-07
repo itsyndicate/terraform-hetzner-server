@@ -4,7 +4,7 @@
 resource "hcloud_placement_group" "this" {
   count = var.placement_group_create ? 1 : 0
 
-  name  = var.placement_group_name
+  name = var.placement_group_name
   type = "spread"
 
   labels = var.labels
@@ -30,11 +30,11 @@ resource "random_string" "server" {
 resource "hcloud_server" "this" {
   count = var.server_count != null ? var.server_count : 1
 
-  name        = "${var.name}-${random_string.server.result}-${count.index}"
-  image       = var.image
-  server_type = var.server_type
-  location    = var.location
-  ssh_keys    = var.ssh_keys
+  name         = "${var.name}-${random_string.server.result}-${count.index}"
+  image        = var.image
+  server_type  = var.server_type
+  location     = var.location
+  ssh_keys     = var.ssh_keys
   firewall_ids = var.firewall_ids
 
   placement_group_id = length(hcloud_placement_group.this) > 0 ? hcloud_placement_group.this[0].id : null
@@ -52,6 +52,11 @@ resource "hcloud_server" "this" {
     content {
       network_id = network.value
     }
+  }
+
+  public_net {
+    ipv4_enabled = var.public_ipv4_enabled
+    ipv6_enabled = var.public_ipv6_enabled
   }
 
   # Prevents destroying the server if a user changes

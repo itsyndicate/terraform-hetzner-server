@@ -96,6 +96,18 @@ variable "network_id" {
   description = "Network ID to spin up server in"
 }
 
+variable "public_ipv6_enabled" {
+  default     = false
+  type        = bool
+  description = "Enable public IPv6 on the server"
+}
+
+variable "public_ipv4_enabled" {
+  default     = false
+  type        = bool
+  description = "Enable public IPv4 on the server"
+}
+
 variable "labels" {
   default = {}
   type = map(string)
