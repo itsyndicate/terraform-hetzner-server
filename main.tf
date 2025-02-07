@@ -1,4 +1,13 @@
 #-----------------------------------------------------------------------------------------------------------------------
+# Data
+#-----------------------------------------------------------------------------------------------------------------------
+data "hcloud_network" "network" {
+  count = var.network_id != null ? 1 : 0
+  id    = var.network_id
+}
+
+
+#-----------------------------------------------------------------------------------------------------------------------
 # Placement Group
 #-----------------------------------------------------------------------------------------------------------------------
 resource "hcloud_placement_group" "this" {
@@ -46,14 +55,17 @@ resource "hcloud_server" "this" {
   keep_disk = var.keep_disk
   labels    = var.labels
 
+  # Configures network
   dynamic "network" {
     for_each = var.network_id != null ? [var.network_id] : []
 
     content {
       network_id = network.value
+      ip = cidrhost(try(var.server_subnet, data.hcloud_network.network[0].ip_range ), count.index + 10)
     }
   }
 
+  # Configures public net setting
   public_net {
     ipv4_enabled = var.public_ipv4_enabled
     ipv6_enabled = var.public_ipv6_enabled

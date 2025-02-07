@@ -25,10 +25,10 @@ module "pools" {
   network_id = try(each.value.network_id, var.defaults.network_id, null)
   public_ipv4_enabled = try(each.value.public_ipv4_enabled, var.defaults.public_ipv4_enabled, false)
   public_ipv6_enabled = try(each.value.public_ipv6_enabled, var.defaults.public_ipv6_enabled, false)
+  server_subnet = try(each.value.server_subnet, var.defaults.server_subnet, null)
 
   # TODO: Implement other hcloud_server arguments
   # public_net = try(each.value.datacenter, var.defaults.datacenter)
-  # network = try(each.value.network, var.defaults.network, {})
   # delete_protection = try(each.value.datacenter, var.defaults.datacenter, false)
   # rebuild_protection = try(each.value.datacenter, var.defaults.datacenter, false)
   # allow_deprecated_images = try(each.value.datacenter, var.defaults.datacenter, false)

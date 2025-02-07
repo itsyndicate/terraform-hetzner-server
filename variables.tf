@@ -108,6 +108,12 @@ variable "public_ipv4_enabled" {
   description = "Enable public IPv4 on the server"
 }
 
+variable "server_subnet" {
+  default = null
+  type    = string
+  description = "The subnet of the server"
+}
+
 variable "labels" {
   default = {}
   type = map(string)

@@ -27,6 +27,7 @@ variable "server_pools" {
     backups = optional(bool)
     public_ipv4_enabled = optional(bool)
     public_ipv6_enabled = optional(bool)
+    server_subnet = optional(string)
 
   }))
   description = "A map of server pool settings"
