@@ -33,6 +33,4 @@ module "pools" {
   # rebuild_protection = try(each.value.datacenter, var.defaults.datacenter, false)
   # allow_deprecated_images = try(each.value.datacenter, var.defaults.datacenter, false)
   # shutdown_before_deletion = try(each.value.datacenter, var.defaults.datacenter, false)
-
-
 }

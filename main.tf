@@ -66,6 +66,7 @@ resource "hcloud_server" "this" {
       ssh_keys,
       user_data,
       image,
+      network
     ]
   }
 }
