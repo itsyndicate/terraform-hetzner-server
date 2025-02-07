@@ -21,7 +21,7 @@ variable "server_pools" {
     rescue = optional(string)
     labels = optional(map(string))
     firewall_ids = optional(set(string))
-    network = optional(string)
+    network_id = optional(string)
     placement_group_create= optional(bool)
     placement_group_name = optional(string)
     backups = optional(bool)

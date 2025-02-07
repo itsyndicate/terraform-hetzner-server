@@ -1,13 +1,6 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # Placement Group
 #-----------------------------------------------------------------------------------------------------------------------
-variable "placement_group_create" {
-  default = false
-  type    = bool
-}
-
-
-
 resource "hcloud_placement_group" "this" {
   count = var.placement_group_create ? 1 : 0
 
@@ -52,6 +45,14 @@ resource "hcloud_server" "this" {
 
   keep_disk = var.keep_disk
   labels    = var.labels
+
+  dynamic "network" {
+    for_each = var.network_id != null ? [var.network_id] : []
+
+    content {
+      network_id = network.value
+    }
+  }
 
   # Prevents destroying the server if a user changes
   # any of the attributes that force to recreate the servers.

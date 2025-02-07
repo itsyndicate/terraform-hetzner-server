@@ -7,6 +7,10 @@ variable "name" {
   description = "Server hostname"
 }
 
+variable "placement_group_create" {
+  default = false
+  type    = bool
+}
 
 variable "placement_group_name" {
   default     = ""
@@ -84,6 +88,12 @@ variable "server_count" {
   default     = null
   type        = number
   description = "Number of servers to provision in the pool"
+}
+
+variable "network_id" {
+  default     = null
+  type        = string
+  description = "Network ID to spin up server in"
 }
 
 variable "labels" {
