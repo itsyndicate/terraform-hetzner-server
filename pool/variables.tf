@@ -25,6 +25,8 @@ variable "server_pools" {
     placement_group_create= optional(bool)
     placement_group_name = optional(string)
     backups = optional(bool)
+    public_ipv4_enabled = optional(bool)
+    public_ipv6_enabled = optional(bool)
 
   }))
   description = "A map of server pool settings"

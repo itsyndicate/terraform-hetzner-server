@@ -23,6 +23,8 @@ module "pools" {
   placement_group_create = try(each.value.placement_group_create, var.defaults.placement_group_create, false)
   placement_group_name = try(each.value.placement_group_name, var.defaults.placement_group_name, null)
   network_id = try(each.value.network_id, var.defaults.network_id, null)
+  public_ipv4_enabled = try(each.value.public_ipv4_enabled, var.defaults.public_ipv4_enabled, false)
+  public_ipv6_enabled = try(each.value.public_ipv6_enabled, var.defaults.public_ipv6_enabled, false)
 
   # TODO: Implement other hcloud_server arguments
   # public_net = try(each.value.datacenter, var.defaults.datacenter)
