@@ -11,7 +11,6 @@
 | Name | Version |
 | ---- | ------- |
 | <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.68.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.9.0 |
 
 ## Modules
 
@@ -23,7 +22,6 @@ No modules.
 | ---- | ---- |
 | [hcloud_placement_group.this](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/placement_group) | resource |
 | [hcloud_server.this](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server) | resource |
-| [random_string.server](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [hcloud_network.network](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/data-sources/network) | data source |
 
 ## Inputs

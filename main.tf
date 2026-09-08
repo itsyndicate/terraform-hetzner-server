@@ -23,21 +23,8 @@ resource "hcloud_placement_group" "this" {
 #-----------------------------------------------------------------------------------------------------------------------
 # Single Server
 #-----------------------------------------------------------------------------------------------------------------------
-resource "random_string" "server" {
-  length  = 4
-  lower   = true
-  special = false
-  numeric = false
-  upper   = false
-
-  keepers = {
-    # We re-create the apart of the name changes.
-    name = var.name
-  }
-}
-
 resource "hcloud_server" "this" {
-  name         = "${var.name}-${random_string.server.result}"
+  name         = var.name
   image        = var.image
   server_type  = var.server_type
   location     = var.location
@@ -47,8 +34,6 @@ resource "hcloud_server" "this" {
   placement_group_id = length(hcloud_placement_group.this) > 0 ? hcloud_placement_group.this[0].id : null
 
   backups = var.backups
-
-  # user_data          = data.cloudinit_config.config.rendered
 
   # Hetzner requires both attributes to hold the same value.
   delete_protection  = var.protection
@@ -79,30 +64,7 @@ resource "hcloud_server" "this" {
   lifecycle {
     ignore_changes = [
       ssh_keys,
-      user_data,
       image
     ]
   }
 }
-
-
-# data "cloudinit_config" "config" {
-#   gzip          = true
-#   base64_encode = true
-#
-#   # Main cloud-config configuration file.
-#   part {
-#     filename     = "init.cfg"
-#     content_type = "text/cloud-config"
-#     content = templatefile(
-#       "${path.module}/templates/cloudinit.yaml.tpl",
-#       {
-#         hostname                     = local.name
-#         sshAuthorizedKeys = concat([var.ssh_public_key], var.ssh_additional_public_keys)
-#         cloudinit_write_files_common = var.cloudinit_write_files_common
-#         cloudinit_runcmd_common      = var.cloudinit_runcmd_common
-#         swap_size                    = var.swap_size
-#       }
-#     )
-#   }
-# }
