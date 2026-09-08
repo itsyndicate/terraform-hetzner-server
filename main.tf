@@ -37,9 +37,7 @@ resource "random_string" "server" {
 }
 
 resource "hcloud_server" "this" {
-  count = var.server_count != null ? var.server_count : 1
-
-  name         = "${var.name}-${random_string.server.result}-${count.index}"
+  name         = "${var.name}-${random_string.server.result}"
   image        = var.image
   server_type  = var.server_type
   location     = var.location
@@ -52,6 +50,10 @@ resource "hcloud_server" "this" {
 
   # user_data          = data.cloudinit_config.config.rendered
 
+  # Hetzner requires both attributes to hold the same value.
+  delete_protection  = var.protection
+  rebuild_protection = var.protection
+
   keep_disk = var.keep_disk
   labels    = var.labels
 
@@ -61,13 +63,14 @@ resource "hcloud_server" "this" {
 
     content {
       network_id = network.value
-      ip = cidrhost(try(var.server_subnet, data.hcloud_network.network[0].ip_range ), count.index + 10)
+      ip         = cidrhost(try(var.server_subnet, data.hcloud_network.network[0].ip_range), 10)
     }
   }
 
   # Configures public net setting
   public_net {
     ipv4_enabled = var.public_ipv4_enabled
+    ipv4         = var.primary_ipv4_id
     ipv6_enabled = var.public_ipv6_enabled
   }
 
