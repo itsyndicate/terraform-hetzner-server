@@ -23,23 +23,8 @@ resource "hcloud_placement_group" "this" {
 #-----------------------------------------------------------------------------------------------------------------------
 # Single Server
 #-----------------------------------------------------------------------------------------------------------------------
-resource "random_string" "server" {
-  length  = 4
-  lower   = true
-  special = false
-  numeric = false
-  upper   = false
-
-  keepers = {
-    # We re-create the apart of the name changes.
-    name = var.name
-  }
-}
-
 resource "hcloud_server" "this" {
-  count = var.server_count != null ? var.server_count : 1
-
-  name         = "${var.name}-${random_string.server.result}-${count.index}"
+  name         = var.name
   image        = var.image
   server_type  = var.server_type
   location     = var.location
@@ -50,7 +35,9 @@ resource "hcloud_server" "this" {
 
   backups = var.backups
 
-  # user_data          = data.cloudinit_config.config.rendered
+  # Hetzner requires both attributes to hold the same value.
+  delete_protection  = var.protection
+  rebuild_protection = var.protection
 
   keep_disk = var.keep_disk
   labels    = var.labels
@@ -61,13 +48,14 @@ resource "hcloud_server" "this" {
 
     content {
       network_id = network.value
-      ip = cidrhost(try(var.server_subnet, data.hcloud_network.network[0].ip_range ), count.index + 10)
+      ip         = cidrhost(try(var.server_subnet, data.hcloud_network.network[0].ip_range), 10)
     }
   }
 
   # Configures public net setting
   public_net {
     ipv4_enabled = var.public_ipv4_enabled
+    ipv4         = var.primary_ipv4_id
     ipv6_enabled = var.public_ipv6_enabled
   }
 
@@ -76,30 +64,7 @@ resource "hcloud_server" "this" {
   lifecycle {
     ignore_changes = [
       ssh_keys,
-      user_data,
       image
     ]
   }
 }
-
-
-# data "cloudinit_config" "config" {
-#   gzip          = true
-#   base64_encode = true
-#
-#   # Main cloud-config configuration file.
-#   part {
-#     filename     = "init.cfg"
-#     content_type = "text/cloud-config"
-#     content = templatefile(
-#       "${path.module}/templates/cloudinit.yaml.tpl",
-#       {
-#         hostname                     = local.name
-#         sshAuthorizedKeys = concat([var.ssh_public_key], var.ssh_additional_public_keys)
-#         cloudinit_write_files_common = var.cloudinit_write_files_common
-#         cloudinit_runcmd_common      = var.cloudinit_runcmd_common
-#         swap_size                    = var.swap_size
-#       }
-#     )
-#   }
-# }

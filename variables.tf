@@ -2,20 +2,21 @@
 # Variables
 #-----------------------------------------------------------------------------------------------------------------------
 variable "name" {
-  default     = ""
-  type        = string
   description = "Server hostname"
+  type        = string
+  default     = ""
 }
 
 variable "placement_group_create" {
-  default = false
-  type    = bool
+  description = "Whether to create a spread placement group for the server"
+  type        = bool
+  default     = false
 }
 
 variable "placement_group_name" {
-  default     = ""
-  type        = string
   description = "Create placement group with a given name"
+  type        = string
+  default     = ""
 }
 
 variable "image" {
@@ -25,97 +26,79 @@ variable "image" {
 }
 
 variable "server_type" {
-  default     = "cx22"
-  type        = string
   description = "Name of the server type this server should be created with"
+  type        = string
+  default     = "cx22"
 }
 
 variable "location" {
-  default     = ""
-  type        = string
   description = "The location name to create the server in"
-}
-
-variable "datacenter" {
-  default     = ""
   type        = string
-  description = "The datacenter name to create the server in"
-}
-
-variable "user_data" {
   default     = ""
-  type        = string
-  description = "Cloud-Init user data to use during server creation"
 }
 
 variable "ssh_keys" {
-  default = []
-  type = set(string)
   description = "SSH key IDs or names which should be injected into the server at creation time"
+  type        = set(string)
+  default     = []
 }
 
 variable "firewall_ids" {
-  default = []
-  type = set(string)
   description = "Firewall IDs the server should be attached to on creation."
+  type        = set(string)
+  default     = []
 }
 
 variable "backups" {
-  default     = false
-  type        = bool
   description = "Whether backups are enabled"
+  type        = bool
+  default     = false
 }
 
 variable "keep_disk" {
-  default     = false
-  type        = bool
   description = "If true, do not upgrade the disk. This allows downgrading the server type later."
+  type        = bool
+  default     = false
 }
 
-variable "iso" {
-  default     = ""
-  type        = string
-  description = "ID or Name of an ISO image to mount."
-}
-
-variable "rescue" {
-  default     = ""
-  type        = string
-  description = "Enable and boot in to the specified rescue system. This enables simple installation of custom operating systems. linux64 or linux32"
-}
-
-variable "server_count" {
-  default     = null
-  type        = number
-  description = "Number of servers to provision in the pool"
+variable "protection" {
+  description = "Enable Hetzner delete and rebuild protection on the server."
+  type        = bool
+  default     = false
 }
 
 variable "network_id" {
-  default     = null
-  type        = string
   description = "Network ID to spin up server in"
+  type        = string
+  default     = null
 }
 
 variable "public_ipv6_enabled" {
-  default     = false
-  type        = bool
   description = "Enable public IPv6 on the server"
+  type        = bool
+  default     = false
 }
 
 variable "public_ipv4_enabled" {
-  default     = false
-  type        = bool
   description = "Enable public IPv4 on the server"
+  type        = bool
+  default     = false
+}
+
+variable "primary_ipv4_id" {
+  description = "ID of an existing primary IPv4 to attach. Null lets Hetzner assign one at creation"
+  type        = number
+  default     = null
 }
 
 variable "server_subnet" {
-  default = null
-  type    = string
   description = "The subnet of the server"
+  type        = string
+  default     = null
 }
 
 variable "labels" {
-  default = {}
-  type = map(string)
   description = "A map of labels to add to all resources"
+  type        = map(string)
+  default     = {}
 }
