@@ -1,13 +1,12 @@
 #-----------------------------------------------------------------------------------------------------------------------
-# hcloud Terraform Provider
+# Outputs
 #-----------------------------------------------------------------------------------------------------------------------
-terraform {
-  required_version = ">= 1.3"
+output "id" {
+  description = "ID of the Server resource"
+  value       = module.server.id
+}
 
-  required_providers {
-    hcloud = {
-      source  = "hetznercloud/hcloud"
-      version = "~> 1.49"
-    }
-  }
+output "ipv4_address" {
+  description = "Public IPv4 address of the server"
+  value       = module.server.ipv4_address
 }
